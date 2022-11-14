@@ -1,0 +1,8 @@
+- provide(:title, "Reservaciones")
+h1 Reservaciones
+.container
+  - if @reservations.any?
+    = render 'reservations_table', edit_dispatched: true
+    = will_paginate
+  - else
+    h2 No existen ordenes :(

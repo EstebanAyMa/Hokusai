@@ -1,0 +1,40 @@
+header.p-3.text-bg-dark
+  .container
+    .d-flex.flex-wrap.align-items-center.justify-content-center.justify-content-lg-start
+      = link_to root_path, class: "d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" do
+        = image_tag "HokusaiLogo.png", class: :logo
+      ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0"
+        li = link_to "Principal", "#", class: "nav-link px-2 text-secondary"
+        li.dropdown
+          = link_to "Cruceros", "#", class: "nav-link px-2 text-white dropdown-toggle", data: { "bs-toggle": "dropdown" }
+          ul.dropdown-menu.dropdown-menu-dark
+            li = link_to "Todos los cruceros", cruises_path, class: "dropdown-item"
+            - Region.all.each do |region|
+              li = link_to region.display_name, cruises_path(id: region), class: "dropdown-item"
+        - if logged_in? && current_user.admin?
+          li.dropdown
+            = link_to "Admin", "#", class: "nav-link px-2 text-white dropdown-toggle", data: { "bs-toggle": "dropdown" }
+            ul.dropdown-menu.dropdown-menu-dark
+              li = link_to "Agregar Crucero", new_cruise_path, class: "dropdown-item"
+              li = link_to "Confirmar Compra", reservations_path, class: "dropdown-item"
+        li = link_to "Contacto", contact_us_path, class: "nav-link px-2 text-white"
+        li = link_to "Acerca de", about_path, class: "nav-link px-2 text-white"
+
+        li id="bag" style="margin: 0 10px;"
+          i.bi-bag style="font-size: 30px;"
+          = link_to shopping_bag_path do
+            span $#{format_price(item_total)}
+        - if logged_in?
+          li.dropdown id="account"
+            = link_to "#", class: "nav-link px-2 text-white dropdown-toggle", data: { "bs-toggle": "dropdown" }
+              i.bi-github style="margin: 0 5px;"
+              = current_user&.first_name || "Cuenta"
+            ul.dropdown-menu.dropdown-menu-dark
+              li = link_to "Mis Reservaciones", my_reservations_path, class: "dropdown-item"
+              li = link_to "Configuración", edit_user_path(current_user), class: "dropdown-item"
+              li.divider
+              li = button_to "Salir", logout_path, method: "delete", class: "dropdown-item"
+        - else
+          div.text-end
+            = link_to "Ingresar", login_path, class: "btn btn-outline-light me-2"
+            = link_to "Crear cuenta", signup_path, class: "btn btn-warning"

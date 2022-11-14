@@ -1,0 +1,26 @@
+ruby:
+  js_controller = "crucero--controller"
+
+= render 'shared/error_messages', object: f.object
+
+= f.label :name, "Nombre"
+= f.text_field :name, class: "form-control"
+
+= f.label :region_id, "Región"
+= f.collection_select :region_id, @regions, :id, :display_name, { prompt: '--- Seleccionar region ---' },
+                      data: { action: "change->#{js_controller}#loadDestinations" }
+
+= f.label :destination_id, "Destino"
+= f.collection_select :destination_id, @destinations, :id, :display_name, include_blank: '--- Seleccionar destino ---'
+
+= f.label :description, "Descripción"
+= f.text_area :description, class: "form-control"
+
+= f.label :price, "Precio"
+= f.number_field :price, step: :any, class: "form-control"
+
+= f.label :quantity, "Numero de camarotes"
+= f.number_field :quantity, class: "form-control"
+
+= f.label :primary_img, "Imagen"
+= f.file_field :primary_img, accept: "image/jpeg,image/gif,image/png"
